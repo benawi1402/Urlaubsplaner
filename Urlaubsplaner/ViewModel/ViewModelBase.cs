@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Urlaubsplaner.ViewModel
 {
-    class BaseViewModel : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Urlaubsplaner.Model;
+using Urlaubsplaner.Service;
 using Urlaubsplaner.Util;
 
 namespace Urlaubsplaner.ViewModel
 {
-    class HolidayApplicationViewModel : BaseViewModel
+    public class HolidayApplicationViewModel : ViewModelBase
     {
         public ICommand AppliedClickCommand { get; }
+
+        private readonly VacationApplicationService _vacationApplicationService;
+        private readonly User _currentUser;
 
         private DateTime _from;
         public DateTime From
@@ -60,14 +58,24 @@ namespace Urlaubsplaner.ViewModel
             }
         }
 
-        public HolidayApplicationViewModel()
+        public event EventHandler? OnApplicationAdded;
+
+        public HolidayApplicationViewModel(VacationApplicationService vacationApplicationService, User currentUser)
         {
+            _currentUser = currentUser;
+            _vacationApplicationService = vacationApplicationService;
             AppliedClickCommand = new RelayCommand(execute => OnButtonClicked());
             VacationDays = 100;
         }
 
         private void OnButtonClicked()
         {
+            // validate data
+
+            // save application
+            var application = new VacationApplication(From, To, _currentUser);
+            _vacationApplicationService.SaveApplication(application);
+            OnApplicationAdded?.Invoke(this, new EventArgs());
         }
 
         private void UpdateVacationCalculation()

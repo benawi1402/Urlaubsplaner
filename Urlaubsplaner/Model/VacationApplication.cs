@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Urlaubsplaner.Model
+﻿namespace Urlaubsplaner.Model
 {
-    class VacationApplication : ModelBase
+    public class VacationApplication : ModelBase
     {
         private bool _confirmed = false;
         private User? _confirmedBy;
 
-        public int Id;
-        public DateTime From;
-        public DateTime To;
-        public User User;
+        public int Id { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+        public User User { get; set; }
 
         public bool Confirmed { 
             get => _confirmed;
@@ -38,8 +32,8 @@ namespace Urlaubsplaner.Model
 
             }
         }
-        public DateTime LastEdited = DateTime.Now;
-        public DateTime Added = DateTime.Now;
+        public DateTime LastEdited { get; set; }
+        public DateTime Added { get; set; }
         public int Duration => (To - From).Days;
 
         public VacationApplication(DateTime from, DateTime to, User user)
@@ -47,6 +41,8 @@ namespace Urlaubsplaner.Model
             From = from;
             To = to;
             User = user;
+
+            Added = DateTime.Now;
         }
 
         private void UpdateLastEdited()

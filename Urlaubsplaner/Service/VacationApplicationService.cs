@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Urlaubsplaner.Model;
 
 namespace Urlaubsplaner.Service
 {
-    class VacationApplicationService
+    public class VacationApplicationService
     {
 
         private ObservableCollection<VacationApplication> applications;
+
+        public VacationApplicationService()
+        {
+            applications = new ObservableCollection<VacationApplication>();
+        }
+
         public void SaveApplication(VacationApplication application)
         {
-
+            applications.Add(application);
         }
 
         public ObservableCollection<VacationApplication> GetVacationApplicationsByUser(User user)

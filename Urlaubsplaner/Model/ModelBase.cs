@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Urlaubsplaner.Model
 {
     /** 
      * Base Class to limit boiler plate code in models for update logic, like the LastEdited field in VacationApplication
      */
-    class ModelBase : INotifyPropertyChanged
+    public class ModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

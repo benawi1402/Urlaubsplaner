@@ -1,0 +1,44 @@
+﻿<Window x:Class="Urlaubsplaner.View.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Urlaubsplaner.View"
+        mc:Ignorable="d"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterScreen"
+        Title="Login" Height="238" Width="510">
+    <Grid>
+        <Grid HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="urlaubs" FontFamily="Segoe UI Black" FontSize="36" Margin="0,0,-10,0"/>
+            <Label Grid.Row="0" Grid.Column="1" Content="planer" FontFamily="Segoe UI Black" FontSize="36" Foreground="#FFAE0000"></Label>
+        </Grid>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="200">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Benutzername" FontWeight="Bold" FontFamily="Segoe UI Black"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Passwort" FontWeight="Bold" FontFamily="Segoe UI Black"  Margin="0,10,0,0"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Width="100" Text="{Binding Username}" />
+            <PasswordBox Grid.Row="1" Grid.Column="1" Width="100" Margin="0,10,0,0" PasswordChanged="PasswordBox_PasswordChanged"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="Anmelden" Margin="0,10,0,40" Command="{Binding LoginCommand}"/>
+        </Grid>
+
+
+
+    </Grid>
+</Window>
