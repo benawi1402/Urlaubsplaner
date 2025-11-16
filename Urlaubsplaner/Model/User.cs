@@ -15,5 +15,11 @@ namespace Urlaubsplaner.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Role[] Roles { get; set; }
+
+        public int TeamId { get; set; }
+        
+        public int TotalVacationDays { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

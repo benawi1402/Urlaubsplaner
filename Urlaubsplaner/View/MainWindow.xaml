@@ -4,26 +4,119 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Urlaubsplaner.ViewModel"
+        xmlns:util="clr-namespace:Urlaubsplaner.Util"
         mc:Ignorable="d"
-        Title="Urlaubsplaner" Height="450" Width="800" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=True}">
-    
+        Title="Urlaubsplaner" Height="689" Width="800" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <util:DateConverter x:Key="dateConverter"/>
+    </Window.Resources>
     <Grid>
-        <Border BorderBrush="Black" BorderThickness="1" Margin="10,100,10,10">
-            <DataGrid ItemsSource="{Binding Applications}" Margin="0,0,0,0" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Beantragt" Binding="{Binding Added}"/>
-                    <DataGridTextColumn Header="Vorname" Binding="{Binding User.FirstName}"/>
-                    <DataGridTextColumn Header="Nachname" Binding="{Binding User.LastName}"/>
-                    <DataGridTextColumn Header="Urlaub Anfang" Binding="{Binding From}"/>
-                    <DataGridTextColumn Header="Urlaub Ende" Binding="{Binding To}"/>
-                    <DataGridTextColumn Header="Dauer" Binding="{Binding Duration}"/>
-                    <DataGridCheckBoxColumn Header="Genehmigt" Binding="{Binding Confirmed}"/>
-                    <DataGridTextColumn Header="Genehmigt durch" Binding="{Binding ConfirmedBy}"/>
-                    <DataGridTextColumn Header="Bearbeitet am" Binding="{Binding LastEdited}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
-        <Button Command="{Binding VacationApplicationClickCommand}" Content="Urlaubsantrag" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="83" Width="90"/>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="{Binding DetailViewHeight}"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Command="{Binding VacationApplicationClickCommand}" Content="Urlaubsantrag" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="83" Width="90"/>
+            <Button Grid.Column="1" Command="{Binding ConfirmApplicationClickCommand}" IsEnabled="{Binding CanConfirm}" Content="Genehmigen" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="83" Width="90"/>
+            <Grid Grid.Column="2" MaxWidth="300" MaxHeight="60" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Willkommen" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentUser.FullName}" HorizontalAlignment="Right"  VerticalAlignment="Top" Foreground="#FF035BFF"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Resturlaub" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentUserRemainingVacation}" HorizontalAlignment="Right"  VerticalAlignment="Top" Foreground="#FF035BFF"/>
+            </Grid>
+            
+        </Grid>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Persönlich" IsSelected="{Binding PersonalTabActive}">
+                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10,10,10,10">
+                    <DataGrid ItemsSource="{Binding Applications}" Margin="0,0,0,0" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Beantragt" Binding="{Binding Added, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding User.FirstName}"/>
+                            <DataGridTextColumn Header="Nachname" Binding="{Binding User.LastName}"/>
+                            <DataGridTextColumn Header="Urlaub Anfang" Binding="{Binding From, StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Urlaub Ende" Binding="{Binding To,StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Dauer" Binding="{Binding Duration}"/>
+                            <DataGridCheckBoxColumn Header="Genehmigt" Binding="{Binding Confirmed}"/>
+                            <DataGridTextColumn Header="Genehmigt durch" Binding="{Binding ConfirmedBy.FullName}"/>
+                            <DataGridTextColumn Header="Bearbeitet am" Binding="{Binding LastEdited, StringFormat=\{0:dd.MM.yy\}, Converter={StaticResource dateConverter}}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </TabItem>
+            <TabItem Header="Team-Anträge" IsEnabled="{Binding IsTeamLeader}" IsSelected="{Binding TeamTabActive}">
+                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10,10,10,10">
+                    <DataGrid ItemsSource="{Binding TeamApplications}" SelectedItem="{Binding SelectedApplication}" Margin="0,0,0,0" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Beantragt" Binding="{Binding Added, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
+                            <DataGridTextColumn Header="Vorname" Binding="{Binding User.FirstName}"/>
+                            <DataGridTextColumn Header="Nachname" Binding="{Binding User.LastName}"/>
+                            <DataGridTextColumn Header="Urlaub Anfang" Binding="{Binding From, StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Urlaub Ende" Binding="{Binding To,StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Dauer" Binding="{Binding Duration}"/>
+                            <DataGridCheckBoxColumn Header="Genehmigt" Binding="{Binding Confirmed}"/>
+                            <DataGridTextColumn Header="Genehmigt durch" Binding="{Binding ConfirmedBy.FullName}"/>
+                            <DataGridTextColumn Header="Bearbeitet am" Binding="{Binding LastEdited, StringFormat=\{0:dd.MM.yy\}, Converter={StaticResource dateConverter}}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Row="2" Visibility="{Binding DetailViewVisible}" Margin="10,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="18"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="ID" Padding="0"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedApplication.Id}" Padding="0"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Hinzugefügt" Padding="0"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedApplication.Added, StringFormat='{}{0:dd.MM.yy hh:MM:ss}'}" Padding="0"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Vorname" Padding="0"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedApplication.User.FirstName}" Padding="0"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Nachname" Padding="0"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedApplication.User.LastName}" Padding="0"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Urlaub Anfang" Padding="0"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedApplication.From, StringFormat='{}{0:dd.MM.yy}'}" Padding="0"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="Urlaub Ende" Padding="0"/>
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedApplication.To, StringFormat='{}{0:dd.MM.yy}'}" Padding="0"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="Dauer" Padding="0"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedApplication.Duration}" Padding="0"/>
+            <Label Grid.Row="7" Grid.Column="0" Content="Genehmigt" Padding="0"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedApplication.Confirmed}" Padding="0"/>
+            <Label Grid.Row="8" Grid.Column="0" Content="Genehmigt durch" Padding="0"/>
+            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding SelectedApplication.ConfirmedBy.FullName}" Padding="0"/>
+            <Label Grid.Row="9" Grid.Column="0" Content="Bearbeitet am" Padding="0"/>
+            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding SelectedApplication.LastEdited, StringFormat='{}{0:dd.MM.yy hh:MM:ss}', Converter={StaticResource dateConverter}}" Padding="0"/>
+        </Grid>
+        
+
     </Grid>
 </Window>

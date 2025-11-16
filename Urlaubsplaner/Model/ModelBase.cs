@@ -6,6 +6,7 @@ namespace Urlaubsplaner.Model
     /** 
      * Base Class to limit boiler plate code in models for update logic, like the LastEdited field in VacationApplication
      */
+    [Serializable]
     public class ModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -8,7 +8,7 @@
         VerticalAlignment="Center"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Title="Login" Height="238" Width="510">
+        Title="Login" Height="253" Width="510">
     <Grid>
         <Grid HorizontalAlignment="Center">
             <Grid.RowDefinitions>
@@ -35,7 +35,7 @@
             <Label Grid.Row="1" Grid.Column="0" Content="Passwort" FontWeight="Bold" FontFamily="Segoe UI Black"  Margin="0,10,0,0"/>
             <TextBox Grid.Row="0" Grid.Column="1" Width="100" Text="{Binding Username}" />
             <PasswordBox Grid.Row="1" Grid.Column="1" Width="100" Margin="0,10,0,0" PasswordChanged="PasswordBox_PasswordChanged"/>
-            <Button Grid.Row="2" Grid.Column="1" Content="Anmelden" Margin="0,10,0,40" Command="{Binding LoginCommand}"/>
+            <Button Height="20" Grid.Row="2" Grid.Column="1" Content="Anmelden" Margin="0,10,0,40" Command="{Binding LoginCommand}" IsDefault="True"/>
         </Grid>
 
 

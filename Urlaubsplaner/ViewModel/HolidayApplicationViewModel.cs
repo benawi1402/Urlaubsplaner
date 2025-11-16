@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using Urlaubsplaner.Model;
 using Urlaubsplaner.Service;
 using Urlaubsplaner.Util;
@@ -12,7 +13,7 @@ namespace Urlaubsplaner.ViewModel
         private readonly VacationApplicationService _vacationApplicationService;
         private readonly User _currentUser;
 
-        private DateTime _from;
+        private DateTime _from = DateTime.Now;
         public DateTime From
         {
             get => _from;
@@ -24,7 +25,7 @@ namespace Urlaubsplaner.ViewModel
             }
         }
 
-        private DateTime _to;
+        private DateTime _to = DateTime.Now;
         public DateTime To
         {
             get => _to;
@@ -60,20 +61,29 @@ namespace Urlaubsplaner.ViewModel
 
         public event EventHandler? OnApplicationAdded;
 
-        public HolidayApplicationViewModel(VacationApplicationService vacationApplicationService, User currentUser)
+        public HolidayApplicationViewModel(VacationApplicationService vacationApplicationService, User currentUser, int vacationDays)
         {
             _currentUser = currentUser;
             _vacationApplicationService = vacationApplicationService;
+            VacationDays = vacationDays;
             AppliedClickCommand = new RelayCommand(execute => OnButtonClicked());
-            VacationDays = 100;
+            UpdateVacationCalculation();
         }
 
         private void OnButtonClicked()
         {
+            var application = new VacationApplication(From, To, _currentUser.Id);
             // validate data
 
+
             // save application
-            var application = new VacationApplication(From, To, _currentUser);
+            if((VacationDays - application.GetBusinessDaysBetween()) < 0)
+            {
+                MessageBox.Show("Sie haben nicht genug Resturlaub, um den Urlaubsantrag vorzunehmen.");
+                return;
+            }
+
+
             _vacationApplicationService.SaveApplication(application);
             OnApplicationAdded?.Invoke(this, new EventArgs());
         }
@@ -85,12 +95,14 @@ namespace Urlaubsplaner.ViewModel
             {
                 return;
             }
-
-            var diff = To - From;
-
-            RemainingVacationDays = VacationDays - diff.Days;
+            // calculation of business days is done in model to reuse in datagrid.
+            // I just initalize a VacationApplication for the calculation, could also live in helper class
+            var vacationApplication = new VacationApplication(From, To, _currentUser.Id);
+            RemainingVacationDays = VacationDays - vacationApplication.GetBusinessDaysBetween();
 
         }
+
+       
     }
 }
 

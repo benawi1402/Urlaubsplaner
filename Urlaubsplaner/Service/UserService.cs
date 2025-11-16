@@ -3,7 +3,7 @@ using Urlaubsplaner.Model;
 
 namespace Urlaubsplaner.Service
 {
-    internal class UserService
+    public class UserService
     {
         private List<User> users;
         public UserService() { 
@@ -16,6 +16,8 @@ namespace Urlaubsplaner.Service
                 LastName = "Muster",
                 Username = "maxmus00",
                 Password = "test123",
+                TeamId = 1,
+                TotalVacationDays = 28,
                 Roles = [Role.USER]
             });
 
@@ -26,6 +28,8 @@ namespace Urlaubsplaner.Service
                 LastName = "Muster",
                 Username = "annmus00",
                 Password = "test123",
+                TeamId = 1,
+                TotalVacationDays = 30,
                 Roles = [Role.USER]
             });
             users.Add(new User()
@@ -35,6 +39,43 @@ namespace Urlaubsplaner.Service
                 LastName = "Leader",
                 Username = "larlea00",
                 Password = "test123",
+                TeamId = 1,
+                TotalVacationDays = 30,
+                Roles = [Role.TEAMLEADER]
+            });
+
+            users.Add(new User()
+            {
+                Id = 5,
+                FirstName = "Manfred",
+                LastName = "Meerfeld",
+                Username = "manmer00",
+                Password = "test123",
+                TeamId = 2,
+                TotalVacationDays = 28,
+                Roles = [Role.USER]
+            });
+
+            users.Add(new User()
+            {
+                Id = 6,
+                FirstName = "Gudrun",
+                LastName = "Gans",
+                Username = "gudgan00",
+                Password = "test123",
+                TeamId = 2,
+                TotalVacationDays = 30,
+                Roles = [Role.USER]
+            });
+            users.Add(new User()
+            {
+                Id = 7,
+                FirstName = "Leon",
+                LastName = "Leader",
+                Username = "leolea00",
+                Password = "test123",
+                TeamId = 2,
+                TotalVacationDays = 30,
                 Roles = [Role.TEAMLEADER]
             });
 
@@ -54,6 +95,10 @@ namespace Urlaubsplaner.Service
         public User? FindUser(string username)
         {
             return users.FirstOrDefault(e => e.Username == username);
+        }
+
+        public User? GetUserById(int id) { 
+            return users.FirstOrDefault(u => u.Id == id); 
         }
     }
 }
