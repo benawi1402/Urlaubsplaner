@@ -91,6 +91,7 @@ namespace Urlaubsplaner.ViewModel
             set
             {
                 _detailViewVisible = value;
+                // fix for detail height, tried with Visibility.Collapsed, most likely a bug in my XAML
                 if(_detailViewVisible)
                 {
                     DetailViewHeight = 220;
