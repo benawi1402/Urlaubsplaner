@@ -78,7 +78,7 @@
                 </Border>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="2" Visibility="{Binding DetailViewVisible}" Margin="10,10,10,10">
+        <Grid Grid.Row="2" Margin="10,10,10,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="18"/>
                 <RowDefinition Height="18"/>
